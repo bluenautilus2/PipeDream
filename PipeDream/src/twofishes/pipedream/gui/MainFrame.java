@@ -1,8 +1,8 @@
 package twofishes.pipedream.gui;
 
-import java.awt.Frame;
+import javax.swing.JFrame;
 
-public class MainFrame extends Frame {
+public class MainFrame extends JFrame {
 
 	
 	//add stuff

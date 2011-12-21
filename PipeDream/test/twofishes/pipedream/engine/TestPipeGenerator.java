@@ -1,11 +1,10 @@
-package twofishes.pipedream.engine;
-
-import static org.junit.Assert.*;
+package twofishes.pipedream.engine ;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import twofishes.pipedream.engine.PipeGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
 
 public class TestPipeGenerator {

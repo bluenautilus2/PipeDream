@@ -1,7 +1,8 @@
 package twofishes.pipedream.engine;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
 
 import twofishes.pipedream.gui.*;
 
@@ -13,13 +14,14 @@ public class PipeDream {
 	public static void main(String[] args) {
 		
 		MainFrame theFrame = new MainFrame();
+		
+		//TODO move this stuff into MainFrame constructor
+		theFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
+		theFrame.setTitle("PipeDream") ;
+		theFrame.setPreferredSize(new Dimension(100,100)) ; //remove later
+	
 		theFrame.pack();
 		theFrame.setVisible(true);
-		theFrame.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent we){
-			System.exit(0);
-			}
-		});
 
 	}
 

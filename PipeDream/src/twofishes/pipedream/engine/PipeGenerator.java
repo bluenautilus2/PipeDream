@@ -18,12 +18,15 @@ public class PipeGenerator {
 	}
 
 	public AbsPipe getNewPipe() {
-		int index = random.nextInt() % (pipeMap.size());
+		
+		int positiveNextInt = Math.abs(random.nextInt()); 
+		int index = positiveNextInt % (pipeMap.size());
 		Class<? extends AbsPipe> pipeClass = pipeMap.get(index);
 		try {
 			return pipeClass.newInstance();
 		} catch (Exception e) {
-			// what the hell do i do here?
+			System.out.println("Exception Thrown from PipeGenerator: " + e);
+			e.printStackTrace();
 		}
 
 		return null;

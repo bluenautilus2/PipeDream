@@ -12,7 +12,8 @@ import twofishes.pipedream.pipe.AbsPipe;
 
 public class TestPipeQueue extends TestCase{
     private static int testSize = 10;
-	PipeQueue queue = new PipeQueue(testSize);
+    PipeMap pipeMap = new PipeMap();
+	PipeQueue queue = new PipeQueue(testSize, pipeMap);
 	
 	@Before
 	public void setUp() throws Exception {

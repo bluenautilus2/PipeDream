@@ -9,7 +9,8 @@ import twofishes.pipedream.pipe.AbsPipe;
 
 public class TestPipeGenerator {
 
-	PipeGenerator gen = new PipeGenerator();
+	PipeMap map = new PipeMap();
+	PipeGenerator gen = new PipeGenerator(map);
 	
 	@Before
 	public void setUp() throws Exception {

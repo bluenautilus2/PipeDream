@@ -53,6 +53,7 @@ public class Tile {
 
 	public void setCurrentPipe(AbsPipe currentPipe) {
 		this.currentPipe = currentPipe;
+		currentPipe.setToTile(this);
 	}
 
 }

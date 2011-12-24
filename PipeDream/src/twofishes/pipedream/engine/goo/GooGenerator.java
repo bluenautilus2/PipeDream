@@ -20,6 +20,10 @@ public class GooGenerator implements GooChangeListener {
 
 	ArrayList<GooGeneratedListener> listeners = new ArrayList<GooGeneratedListener>();
 
+	public GooGenerator(){
+		
+	}
+	
 	public void addListener(GooGeneratedListener listener) {
 		listeners.add(listener);
 	}
@@ -36,6 +40,10 @@ public class GooGenerator implements GooChangeListener {
 		this.makeMoreGoo = false;
 	}
 
+	/**
+	 * run in some kind of goo thread
+	 * will refine this later
+	 */
 	public void run() {
 		while (this.makeMoreGoo) {
 			try {

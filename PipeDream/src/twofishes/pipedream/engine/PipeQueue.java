@@ -3,6 +3,7 @@ package twofishes.pipedream.engine;
 import java.util.ArrayList;
 
 import twofishes.pipedream.pipe.AbsPipe;
+import twofishes.pipedream.pipe.PipeMap;
 
 /**
  * Maintains a full queue of pipes at all times

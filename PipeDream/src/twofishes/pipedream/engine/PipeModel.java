@@ -37,7 +37,7 @@ public class PipeModel implements GooGeneratedListener{
 	 public void gooAdvanced(){
 		 currentPipe.gooAdvance();
 		 if(currentPipe.getCurrentState().equals(PipeState.FULL)){
-			 AbsPipe newPipe= getNextTile();
+			 AbsPipe newPipe= checkNextTile();
 			 if(newPipe == null){
 				 for(GooChangeListener listener:this.gooChangeListeners){
 					 listener.gooBlocked();
@@ -53,12 +53,13 @@ public class PipeModel implements GooGeneratedListener{
 		 }
 	 }
 	
-	 private AbsPipe getNextTile(){
+	 private AbsPipe checkNextTile(){
 		 return null;
+		 
 		 
 	 }
 	 
 	 private void beginNewPipe(AbsPipe pipe){
-		 //se
+		 //
 	 }
 }

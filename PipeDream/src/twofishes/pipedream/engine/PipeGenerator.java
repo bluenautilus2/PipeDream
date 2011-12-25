@@ -2,7 +2,8 @@ package twofishes.pipedream.engine;
 
 import java.util.Random;
 
-import twofishes.pipedream.pipe.*;
+import twofishes.pipedream.pipe.AbsPipe;
+import twofishes.pipedream.pipe.PipeMap;
 
 public class PipeGenerator {
 

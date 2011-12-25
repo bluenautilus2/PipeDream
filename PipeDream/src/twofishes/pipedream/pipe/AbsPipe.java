@@ -16,15 +16,21 @@ public abstract class AbsPipe {
 	//Set if the tile has been laid down.
 	protected Tile tile = null;
 	
-	public abstract Entrance getExit(Entrance entered);
+	private Entrance entranceEntered = null;
+	
+	protected abstract Entrance getExit(Entrance entered);
+	
+	public Entrance getExit(){
+		if(entranceEntered!=null){
+			return getExit(entranceEntered);
+		}
+		return null;
+	}
 	
 	/**
 	 * Called each time the goo advances on the pipe
 	 */
 	public void gooAdvance(){
-		if(getCurrentState().equals(PipeState.EMPTY)){
-			setCurrentState(PipeState.FILLING);
-		}
 		
 		gooCount--;
 		
@@ -32,27 +38,38 @@ public abstract class AbsPipe {
 			this.setCurrentState(PipeState.FULL);
 		}
 		
-		//update pipe animation and fire gui event
-		//@todo
+		//@todo update pipe animation and fire gui event
 	}
 	
-	public void setToTile(Tile tile){
-		this.tile = tile;
-	}
+
+	/**
+	 * Must be called when the pipe has been approved
+	 * to receive the goo
+	 * @param entrance
+	 */
+	protected void gooEntered(Entrance entrance){
 	
-	protected void gooEntered(){
-		this.setCurrentState(PipeState.FILLING);
 	    //Children can override this to trigger specific
 		//Pipe Behavior
+		//Like slowing down the goo, etc.
+		this.setCurrentState(PipeState.FILLING);
+		this.setEntranceEntered(entrance);
 		
 	}
 	
+	/**
+	 * Must be called when it has been determined that 
+	 * the pipe is full.
+	 */
 	protected void pipeFull(){
-		this.setCurrentState(PipeState.FULL);
+		
 		//Children can override this to trigger specific
 		//Pipe Behavior
-		
+		this.setCurrentState(PipeState.FULL);
 	}
+	
+	
+	
 
 	public PipeState getCurrentState() {
 		return currentState;
@@ -61,8 +78,18 @@ public abstract class AbsPipe {
 	public void setCurrentState(PipeState currentState) {
 		this.currentState = currentState;
 	}
+
+	public Entrance getEntranceEntered() {
+		return entranceEntered;
+	}
+
+	public void setEntranceEntered(Entrance entranceEntered) {
+		this.entranceEntered = entranceEntered;
+	}
 	
-	
+	public void setToTile(Tile tile){
+		this.tile = tile;
+	}
 	
 	
 	

@@ -1,5 +1,6 @@
 package twofishes.pipedream.engine;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import twofishes.pipedream.pipe.AbsPipe;
@@ -7,20 +8,20 @@ import twofishes.pipedream.pipe.MovablePipes;
 
 public class PipeGenerator {
 
-	protected MovablePipes pipeMap;
+	protected ArrayList <Class<? extends AbsPipe>> pipeClassList;
 
 	protected Random random = null;
 
-	public PipeGenerator(MovablePipes pipeMap) {
-		this.pipeMap = pipeMap;
+	public PipeGenerator(ArrayList <Class<? extends AbsPipe>> pipeClassList) {
+		this.pipeClassList = pipeClassList;
 		random = new Random(System.currentTimeMillis());
 	}
 
 	public AbsPipe getNewPipe() {
 		
 		int positiveNextInt = Math.abs(random.nextInt()); 
-		int index = positiveNextInt % (pipeMap.size());
-		Class<? extends AbsPipe> pipeClass = pipeMap.get(index);
+		int index = positiveNextInt % (pipeClassList.size());
+		Class<? extends AbsPipe> pipeClass = pipeClassList.get(index);
 		try {
 			return pipeClass.newInstance();
 		} catch (Exception e) {

@@ -2,10 +2,27 @@ package twofishes.pipedream.tile;
 
 import twofishes.pipedream.pipe.AbsPipe;
 
-//can have multiple pipes going.
-//Should only need one TileModel per process
-//but that is not currently enforced
-//(might be a good idea at some point though)
+/**
+ * 
+ * @author bluenautilus2
+ *
+ *can have multiple pipes going.
+ *Should only need one TileModel per process
+ *but that is not currently enforced
+ *(might be a good idea at some point though)
+ * 
+ * Model assumes that 0,0 is in SouthWest Quadrant
+ * ---------------------
+ * |(0,y)         (x,y)|
+ * |       N           |
+ * |   W      E        |
+ * |                   |
+ * |       S           |
+ * |                   |
+ * |(0,0)         (x,0)|
+ * ---------------------
+ * 
+ */
 
 public class TileModel {
 
@@ -35,7 +52,11 @@ public class TileModel {
 	}
 
 	public Tile getTile(int x, int y) {
-		return this.tileGrid[x][y];
+		if(x<this.numTilesWide && y<this.numTilesHigh){
+		  return this.tileGrid[x][y];
+		}else{
+			return null;
+		}
 	}
 
 	/**
@@ -76,7 +97,10 @@ public class TileModel {
 	 * @return
 	 */
 	public Tile getTileToTheEast(Tile tile, boolean ignoreWalls) {
-		if (tile.getX() > this.numTilesWide) {
+		if(tile==null){
+			return null;
+		}
+		if (tile.getX() >= this.numTilesWide-1) {
 			if (ignoreWalls) {
 				return getTile(0, tile.getY());
 			} else {
@@ -95,9 +119,12 @@ public class TileModel {
 	 * @return
 	 */
 	public Tile getTileToTheWest(Tile tile, boolean ignoreWalls) {
-		if (tile.getX() == 0) {
+		if(tile==null){
+			return null;
+		}
+		if (tile.getX() <= 0) {
 			if (ignoreWalls) {
-				return getTile(this.numTilesWide, tile.getY());
+				return getTile(this.numTilesWide-1, tile.getY());
 			} else {
 				return null;
 			}
@@ -113,7 +140,10 @@ public class TileModel {
 	 * @return
 	 */
 	public Tile getTileToTheNorth(Tile tile, boolean ignoreWalls) {
-		if (tile.getY() == this.numTilesHigh) {
+		if(tile==null){
+			return null;
+		}
+		if (tile.getY() >= this.numTilesHigh-1) {
 			if (ignoreWalls) {
 				return getTile(tile.getX(), 0);
 			} else {
@@ -131,9 +161,12 @@ public class TileModel {
 	 * @return
 	 */
 	public Tile getTileToTheSouth(Tile tile, boolean ignoreWalls) {
-		if (tile.getY() == 0) {
+		if(tile==null){
+			return null;
+		}
+		if (tile.getY() <= 0) {
 			if (ignoreWalls) {
-				return getTile(tile.getX(), this.numTilesHigh);
+				return getTile(tile.getX(), this.numTilesHigh-1);
 			} else {
 				return null;
 			}

@@ -10,6 +10,7 @@ import twofishes.pipedream.pipe.Entrance;
 import twofishes.pipedream.pipe.PipeState;
 import twofishes.pipedream.tile.Tile;
 import twofishes.pipedream.tile.TileModel;
+import twofishes.pipedream.tile.TileState;
 
 public class PipeModel implements GooGeneratedListener {
 
@@ -113,7 +114,7 @@ public class PipeModel implements GooGeneratedListener {
 		if (exit.equals(Entrance.BLOCKED)) {
 			return null;
 		}
-
+		
 		newTile.setTileLocked(true);
 		newPipe.gooEntering(entrance);
 		return newPipe;

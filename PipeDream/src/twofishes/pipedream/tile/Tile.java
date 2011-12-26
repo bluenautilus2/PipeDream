@@ -6,7 +6,7 @@ public class Tile {
 
 	private AbsPipe currentPipe;
 
-	private TileState currentState = TileState.EMPTY;
+	private boolean destroying = false;
 
 	private boolean tileLocked = false;
 
@@ -25,20 +25,11 @@ public class Tile {
 
 	public void setTileLocked(boolean tileLocked) {
 		//can't lock empty tiles
-		if (currentState != TileState.EMPTY) {
+		if(this.currentPipe==null){
 			this.tileLocked = tileLocked;
 		}
 	}
 	
-	
-	public TileState getCurrentState() {
-		return currentState;
-	}
-
-	public void setCurrentState(TileState currentState) {
-		this.currentState = currentState;
-	}
-
 	public int getX() {
 		return x;
 	}
@@ -54,6 +45,14 @@ public class Tile {
 	public void setCurrentPipe(AbsPipe currentPipe) {
 		this.currentPipe = currentPipe;
 		currentPipe.setTile(this);
+	}
+
+	public boolean isDestroying() {
+		return destroying;
+	}
+
+	public void setDestroying(boolean destroying) {
+		this.destroying = destroying;
 	}
 
 }

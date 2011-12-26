@@ -69,18 +69,18 @@ public class TileModel {
 	 */
 	public boolean setPipe(AbsPipe pipe, int x, int y) {
 		Tile tile = this.getTile(x, y);
-		if (tile.getCurrentState().equals(TileState.DESTROYING)
+		if (tile.isDestroying()
 				|| tile.isTileLocked()) {
 			// do nothing
 			return false;
-		} else if (tile.getCurrentState().equals(TileState.HAS_PIPE)) {
-			tile.setCurrentState(TileState.DESTROYING);
+		} else if (tile.getCurrentPipe()!=null) {
+			tile.setDestroying(true);
 			// deploy a worker thread to do the animation
 			// don't save the tile for later, user has
 			// to click again to actually set it when
 			// the destroy animation is finished.
 			return false;
-		} else if (tile.getCurrentState().equals(TileState.EMPTY)) {
+		} else if (tile.getCurrentPipe()==null) {
 			tile.setCurrentPipe(pipe);
 			// send some pipe.. notification or something.(?)
 			// maybe not, and let gui grab it in the next refresh..

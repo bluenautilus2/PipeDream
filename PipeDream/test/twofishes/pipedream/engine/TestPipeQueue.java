@@ -9,11 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twofishes.pipedream.pipe.AbsPipe;
-import twofishes.pipedream.pipe.PipeMap;
+import twofishes.pipedream.pipe.MovablePipes;
 
 public class TestPipeQueue extends TestCase{
     private static int testSize = 10;
-    PipeMap pipeMap = new PipeMap();
+    MovablePipes pipeMap = new MovablePipes();
 	PipeQueue queue = new PipeQueue(testSize, pipeMap);
 	
 	@Before

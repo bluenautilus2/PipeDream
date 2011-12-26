@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import twofishes.pipedream.engine.PipeGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
-import twofishes.pipedream.pipe.PipeMap;
+import twofishes.pipedream.pipe.MovablePipes;
 
 public class TestPipeGenerator {
 
-	PipeMap map = new PipeMap();
+	MovablePipes map = new MovablePipes();
 	PipeGenerator gen = new PipeGenerator(map);
 	
 	@Before

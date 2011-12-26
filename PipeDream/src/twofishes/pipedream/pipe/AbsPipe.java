@@ -14,11 +14,11 @@ public abstract class AbsPipe {
 	protected int gooCount = 8;
 	
 	//Set if the tile has been laid down.
-	protected Tile tile = null;
+	private Tile tile = null;
 	
 	private Entrance entranceEntered = null;
 	
-	protected abstract Entrance getExit(Entrance entered);
+	public abstract Entrance getExit(Entrance entered);
 	
 	public Entrance getExit(){
 		if(entranceEntered!=null){
@@ -47,7 +47,7 @@ public abstract class AbsPipe {
 	 * to receive the goo
 	 * @param entrance
 	 */
-	protected void gooEntered(Entrance entrance){
+	public void gooEntering(Entrance entrance){
 	
 	    //Children can override this to trigger specific
 		//Pipe Behavior
@@ -61,7 +61,7 @@ public abstract class AbsPipe {
 	 * Must be called when it has been determined that 
 	 * the pipe is full.
 	 */
-	protected void pipeFull(){
+	public void pipeFull(){
 		
 		//Children can override this to trigger specific
 		//Pipe Behavior
@@ -86,8 +86,12 @@ public abstract class AbsPipe {
 	public void setEntranceEntered(Entrance entranceEntered) {
 		this.entranceEntered = entranceEntered;
 	}
-	
-	public void setToTile(Tile tile){
+
+	public Tile getTile() {
+		return tile;
+	}
+
+	public void setTile(Tile tile) {
 		this.tile = tile;
 	}
 	

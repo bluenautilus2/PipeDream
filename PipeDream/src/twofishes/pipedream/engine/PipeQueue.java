@@ -3,7 +3,7 @@ package twofishes.pipedream.engine;
 import java.util.ArrayList;
 
 import twofishes.pipedream.pipe.AbsPipe;
-import twofishes.pipedream.pipe.PipeMap;
+import twofishes.pipedream.pipe.MovablePipes;
 
 /**
  * Maintains a full queue of pipes at all times
@@ -22,7 +22,7 @@ public class PipeQueue {
 	
 	private PipeGenerator pipeGenerator;
 	
-	public PipeQueue(int size, PipeMap pipeMap){
+	public PipeQueue(int size, MovablePipes pipeMap){
 		pipeGenerator = new PipeGenerator(pipeMap);
 		pipeList = new ArrayList<AbsPipe>(size);
 		for(int i=0; i<size; i++){

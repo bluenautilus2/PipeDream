@@ -3,15 +3,15 @@ package twofishes.pipedream.engine;
 import java.util.Random;
 
 import twofishes.pipedream.pipe.AbsPipe;
-import twofishes.pipedream.pipe.PipeMap;
+import twofishes.pipedream.pipe.MovablePipes;
 
 public class PipeGenerator {
 
-	protected PipeMap pipeMap;
+	protected MovablePipes pipeMap;
 
 	protected Random random = null;
 
-	public PipeGenerator(PipeMap pipeMap) {
+	public PipeGenerator(MovablePipes pipeMap) {
 		this.pipeMap = pipeMap;
 		random = new Random(System.currentTimeMillis());
 	}

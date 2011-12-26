@@ -1,7 +1,5 @@
-package twofishes.pipedream.pipe.immovable;
+package twofishes.pipedream.pipe;
 
-import twofishes.pipedream.pipe.AbsPipe;
-import twofishes.pipedream.pipe.Entrance;
 
 public class EndPipe extends AbsPipe {
 

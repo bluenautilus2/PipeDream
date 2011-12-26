@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import twofishes.pipedream.pipe.AbsPipe;
+import twofishes.pipedream.pipe.PipeMap;
 
 public class TestPipeQueue extends TestCase{
     private static int testSize = 10;

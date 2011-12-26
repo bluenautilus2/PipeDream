@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import twofishes.pipedream.engine.PipeGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
+import twofishes.pipedream.pipe.PipeMap;
 
 public class TestPipeGenerator {
 

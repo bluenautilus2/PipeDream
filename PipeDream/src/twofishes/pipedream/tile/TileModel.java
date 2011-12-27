@@ -173,5 +173,13 @@ public class TileModel {
 		}
 		return getTile(tile.getX(), tile.getY() - 1);
 	}
+	
+	public int getNumTilesWide() {
+		return this.numTilesWide;
+	}
+	
+	public int getNumTilesHigh() {
+		return this.numTilesHigh;
+	}
 
 }

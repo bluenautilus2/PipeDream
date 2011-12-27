@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
+import twofishes.pipedream.tile.Tile;
 import twofishes.pipedream.tile.TileModel;
 
 public class GridView extends AbsView implements IGridView {
@@ -32,8 +33,11 @@ public class GridView extends AbsView implements IGridView {
 				c.gridy = j;
 				
 				//Add the panel to the GridBagConstraints
-				//TODO Get the correct tileView
 				TileView tileView = new TileView();
+				Tile tile = this.tileModel.getTile(i, j);
+				tileView.setTile(tile);
+				
+				
 				this.add(tileView, c);
 			}
 		}

@@ -43,7 +43,6 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
         resetCalled();
         
 		TileModel playingField = new TileModel(20, 20);
-		GooGenerator gooGen = new GooGenerator();
 
 		AbsPipe pipe = new StarterPipeEast();
 		playingField.getTile(5, 10).setCurrentPipe(pipe);
@@ -57,7 +56,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 			playingField.getTile(i, 10).setCurrentPipe(newPipe);
 		}
 
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
 		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getState().equals(PipeState.EMPTY));
 		
@@ -92,7 +91,6 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
         resetCalled();
         
 		TileModel playingField = new TileModel(20, 20);
-		GooGenerator gooGen = new GooGenerator();
 
 		AbsPipe pipe = new StarterPipeEast();
 		playingField.getTile(10, 10).setCurrentPipe(pipe);
@@ -105,7 +103,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(9, 7).setCurrentPipe(new NorthEastElbowPipe());
 	    playingField.getTile(10, 7).setCurrentPipe(new HorizontalPipe());
 	   
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
 		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.EMPTY));
 		
@@ -135,8 +133,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
         resetCalled();
         
 		TileModel playingField = new TileModel(5, 5);
-		GooGenerator gooGen = new GooGenerator();
-
+		
 		AbsPipe pipe = new StarterPipeWest();
 		playingField.getTile(3, 3).setCurrentPipe(pipe);
 
@@ -147,7 +144,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(1,0).setCurrentPipe(new HorizontalPipe());
 	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
 	    
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
 		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
 		
@@ -177,7 +174,6 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
         resetCalled();
         
 		TileModel playingField = new TileModel(5, 5);
-		GooGenerator gooGen = new GooGenerator();
 
 		AbsPipe pipe = new StarterPipeWest();
 		playingField.getTile(3, 3).setCurrentPipe(pipe);
@@ -189,11 +185,11 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(1,0).setCurrentPipe(new VerticalPipe()); //this pipe screws it up
 	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
 	    
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
 		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
 		
-		for (int i = 0; i < (5*GOO_COUNT); i++) {
+		for (int i = 0; i < (5*GOO_COUNT)-1; i++) {
 			pipeModel.gooAdvanced();
 		}
 		
@@ -218,7 +214,6 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
         resetCalled();
         
 		TileModel playingField = new TileModel(5, 5);
-		GooGenerator gooGen = new GooGenerator();
 		
 		AbsPipe pipe = new StarterPipeWest();
 		playingField.getTile(3, 3).setCurrentPipe(pipe);
@@ -230,7 +225,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(1,0).setCurrentPipe(new NorthEastElbowPipe()); 
 	    playingField.getTile(1,1).setCurrentPipe(new SouthEastElbowPipe()); //this leads to 2,1
 	    
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
 		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
 		
@@ -252,9 +247,10 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 
 	}
 	
-	
     //@todo: cross-pipe
 	//@todo: pipe stops in the end piece
+	//@todo: slow down
+	//@todo: speed up
 	
 	
 	boolean speedUpCalled = false;

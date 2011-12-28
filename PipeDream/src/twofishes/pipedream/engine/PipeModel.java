@@ -1,49 +1,38 @@
 package twofishes.pipedream.engine;
 
-import java.util.ArrayList;
-
 import twofishes.pipedream.engine.goo.GooChangeListener;
+
 import twofishes.pipedream.engine.goo.GooGeneratedListener;
-import twofishes.pipedream.engine.goo.GooGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
 import twofishes.pipedream.pipe.Entrance;
 import twofishes.pipedream.pipe.PipeState;
 import twofishes.pipedream.tile.Tile;
 import twofishes.pipedream.tile.TileModel;
-import twofishes.pipedream.tile.TileState;
 
 public class PipeModel implements GooGeneratedListener {
 
 	AbsPipe currentPipe = null;
 
-	ArrayList<GooChangeListener> gooChangeListeners = new ArrayList<GooChangeListener>();
-
-	GooGenerator gooGenerator = null;
+	GooChangeListener gooChangeListener = null;
 
 	TileModel playingField = null;
+	
+	
 
-	public PipeModel(TileModel tileModel, GooGenerator gooGenerator, AbsPipe startingPipe) {
+	public PipeModel(TileModel tileModel, GooChangeListener gooChangeListener, AbsPipe startingPipe) {
 		this.currentPipe = startingPipe;
 		this.playingField = tileModel;
-		this.gooGenerator = gooGenerator;
-		gooGenerator.addListener(this);
-		addGooChangeListener(gooGenerator);
+		this.gooChangeListener = gooChangeListener;
 	}
 
-	public void addGooChangeListener(GooChangeListener listener) {
-		this.gooChangeListeners.add(listener);
-	}
+	public void gooAdvanced() throws Exception {
 
-	public void gooAdvanced() {
+		currentPipe.gooAdvance(this.gooChangeListener);
 
-		currentPipe.gooAdvance();
-
-		if (currentPipe.getCurrentState().equals(PipeState.FULL)) {
+		if (currentPipe.getState().equals(PipeState.FULL)) {
 			boolean stillGoing = this.findNextTileAndPipe();
 			if (!stillGoing) {
-				for (GooChangeListener listener : this.gooChangeListeners) {
-					listener.gooBlocked();
-				}
+				this.gooChangeListener.gooBlocked();
 			}
 		}
 }
@@ -56,9 +45,9 @@ public class PipeModel implements GooGeneratedListener {
 	 * 
 	 * @return true if pipe still going, false if not
 	 */
-	private boolean findNextTileAndPipe() {
+	private boolean findNextTileAndPipe() throws Exception{
 
-		Entrance exit = this.currentPipe.getExit();
+		Entrance exit = this.currentPipe.getExit(this.gooChangeListener);
 		Tile newTile = null;
 		AbsPipe newPipe = null;
 		
@@ -98,7 +87,7 @@ public class PipeModel implements GooGeneratedListener {
 	 * 
 	 * @param pipe
 	 */
-	private AbsPipe tryToStartNewPipe(Tile newTile, Entrance entrance) {
+	private AbsPipe tryToStartNewPipe(Tile newTile, Entrance entrance) throws Exception {
 		if (newTile == null) {
 			// Then we hit a wall
 			return null;
@@ -115,8 +104,8 @@ public class PipeModel implements GooGeneratedListener {
 		}
 
 		newTile.setTileLocked(true);
-		newPipe.gooEntering(entrance);
-		newPipe.setCurrentState(PipeState.FILLING);
+		newPipe.gooEntering(entrance, gooChangeListener);
+		newPipe.setState(PipeState.FILLING);
 		return newPipe;
 	}
 }

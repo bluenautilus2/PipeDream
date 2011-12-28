@@ -43,7 +43,7 @@ public class GooGenerator implements GooChangeListener {
 	/**
 	 * run in some kind of goo thread
 	 * will refine this later
-	 */
+	 *
 	public void run() {
 		while (this.makeMoreGoo) {
 			try {
@@ -58,7 +58,7 @@ public class GooGenerator implements GooChangeListener {
 				ggl.gooAdvanced();
 			}
 		}
-	}
+	}*/
 	
 	
 }

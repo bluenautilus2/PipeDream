@@ -1,83 +1,105 @@
 package twofishes.pipedream.pipe;
 
+import twofishes.pipedream.engine.goo.GooChangeListener;
 import twofishes.pipedream.tile.Tile;
-
 
 public abstract class AbsPipe {
 
-	private PipeState currentState = PipeState.EMPTY;
-	
+	private PipeState state = PipeState.EMPTY;
+
 	/**
-	 * How many times the goo advances before the
-	 * pipe is full. Children can override
+	 * How many times the goo advances before the pipe is full. Children can
+	 * override
 	 */
 	protected int gooCount = 8;
-	
-	//Set if the tile has been laid down.
+
+	// Set if the pipe is set into a tile
 	private Tile tile = null;
-	
+
 	private Entrance entranceEntered = null;
-	
+
 	public abstract Entrance getExit(Entrance entered);
-	
-	public Entrance getExit(){
-		if(entranceEntered!=null){
+
+	/**
+	 * for pipes that affect goo
+	 */
+	public GooChangeListener gooChangeListener;
+
+	/**
+	 * GooChangeListener provided for child pipes that call it to speed up or
+	 * slow down flow. Also used by cross pipe to identify source of flow.
+	 * 
+	 * @param gooChangeListener
+	 * @return
+	 */
+	public Entrance getExit(GooChangeListener gooChangeListener)
+			throws Exception {
+
+		if (entranceEntered != null) {
 			return getExit(entranceEntered);
 		}
 		return null;
 	}
-	
-	/**
-	 * Called each time the goo advances on the pipe
-	 */
-	public void gooAdvance(){
-		
-		gooCount--;
-		
-		//@todo update pipe animation and fire gui event
-		
-		if(gooCount==0){
-			this.setCurrentState(PipeState.FULL);
-		}
-		
-	}
-	
 
 	/**
-	 * Must be called when the pipe has been approved
-	 * to receive the goo
+	 * Must be called when the pipe has been approved to receive the goo
+	 * 
 	 * @param entrance
 	 */
-	public void gooEntering(Entrance entrance){
-	
-	    //Children can override this to trigger specific
-		//Pipe Behavior
-		//Like slowing down the goo, etc.
-		this.setCurrentState(PipeState.FILLING);
+	public void gooEntering(Entrance entrance, GooChangeListener listener)
+			throws Exception {
+
+		// Children can override this to trigger specific
+		// Pipe Behavior
+		// Like slowing down the goo, etc.
+
+		this.setState(PipeState.FILLING);
 		this.setEntranceEntered(entrance);
-		
+		this.gooChangeListener = listener;
+
 	}
-	
+
 	/**
-	 * Must be called when it has been determined that 
-	 * the pipe is full.
+	 * Called each time the goo advances on the pipe
+	 * 
+	 * GooEvent used by special pipes
 	 */
-	public void pipeFull(){
-		
-		//Children can override this to trigger specific
-		//Pipe Behavior
-		this.setCurrentState(PipeState.FULL);
-	}
-	
-	
-	
+	public void gooAdvance(GooChangeListener gooChangeListener)
+			throws Exception {
 
-	public PipeState getCurrentState() {
-		return currentState;
+		if (this.entranceEntered == null) {
+			throw new Exception("Internal AbsPipe exception:"
+					+ " called goodAdvance before gooEntering");
+		}
+
+		gooCount--;
+
+		// @todo update pipe animation and fire gui event
+
+		if (gooCount == 0) {
+			this.setState(PipeState.FULL);
+		}
+
 	}
 
-	public void setCurrentState(PipeState currentState) {
-		this.currentState = currentState;
+	/**
+	 * Must be called when it has been determined that the pipe is full.
+	 * 
+	 * GooChangeListener used by special pipes
+	 */
+	public void pipeFull(GooChangeListener listener) throws Exception {
+
+		// Children can override this to trigger specific
+		// Pipe Behavior
+		this.setState(PipeState.FULL);
+	}
+
+	public PipeState getState() {
+		return state;
+	}
+
+	public void setState(PipeState currentState) {
+		this.state = currentState;
 	}
 
 	public Entrance getEntranceEntered() {
@@ -95,7 +117,5 @@ public abstract class AbsPipe {
 	public void setTile(Tile tile) {
 		this.tile = tile;
 	}
-	
-	
-	
+
 }

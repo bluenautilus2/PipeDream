@@ -1,12 +1,8 @@
 package twofishes.pipedream.engine;
 
-import java.awt.Dimension;
-
-import javax.swing.JFrame;
-
-import twofishes.pipedream.gui.*;
+import twofishes.pipedream.gui.GamePanel;
+import twofishes.pipedream.gui.MainFrame;
 import twofishes.pipedream.gui.view.GridView;
-import twofishes.pipedream.gui.view.StatsView;
 import twofishes.pipedream.pipe.MovablePipes;
 import twofishes.pipedream.tile.TileModel;
 

@@ -46,7 +46,7 @@ public class PipeModel implements GooGeneratedListener {
 				}
 			}
 		}
-	}
+}
 
 	/**
 	 * If the current pipe is connected to the next pipe (based on the direction

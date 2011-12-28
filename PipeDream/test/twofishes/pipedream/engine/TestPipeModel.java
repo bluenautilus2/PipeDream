@@ -33,7 +33,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	 * Simple setup - pipe goes east and then ends.
 	 */
 	@Test
-	public void test1() {
+	public void testStraightPipe() {
         resetCalled();
         
 		TileModel playingField = new TileModel(20, 20);
@@ -81,7 +81,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	 * Pipe snakes around a bit and then ends
 	 */
 	@Test
-	public void test2() {
+	public void testCurvyPipe() {
         resetCalled();
         
 		TileModel playingField = new TileModel(20, 20);
@@ -121,13 +121,11 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	}
 	
 	/**
-	 * Pipe runs smack into the wall... test here is not that a wall
+	 * Pipe runs smack into the wall... the test here is not that a wall
 	 * is found, but rather lack of tile to put a pipe on.
-	 * 
-	 * This test is failing as I check in but I am working on it.
 	 */
 	@Test
-	public void test3() {
+	public void testPipeIntoWall() {
         resetCalled();
         
 		TileModel playingField = new TileModel(5, 5);
@@ -136,7 +134,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 		AbsPipe pipe = new StarterPipeWest();
 		playingField.getTile(3, 3).setCurrentPipe(pipe);
 
-	    playingField.getTile(2,3).setCurrentPipe(new NorthEastElbowPipe());
+	    playingField.getTile(2,3).setCurrentPipe(new SouthEastElbowPipe());
 	    playingField.getTile(2,2).setCurrentPipe(new VerticalPipe());
 	    playingField.getTile(2,1).setCurrentPipe(new VerticalPipe());
 	    playingField.getTile(2,0).setCurrentPipe(new NorthWestElbowPipe());
@@ -153,11 +151,11 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 		}
 		
 		assertTrue(playingField.getTile(2, 2).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
-		//assertTrue(playingField.getTile(9, 7).getCurrentPipe().getCurrentState().equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(1,0).getCurrentPipe().getCurrentState().equals(PipeState.FILLING));
 		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 		
-		for (int i = 0; i < GOO_COUNT+1; i++) {
+		for (int i = 0; i < (GOO_COUNT*2); i++) {
 			pipeModel.gooAdvanced();
 		}
 		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
@@ -165,8 +163,92 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 
 	}
 	
-    //@todo: pipe hits another pipe not connected correctly
-	//@todo: pipe runs back into itself
+    
+	/**
+	 *  pipe hits another pipe not connected correctly
+	 */
+	@Test
+	public void testPipeWrongDirection() {
+        resetCalled();
+        
+		TileModel playingField = new TileModel(5, 5);
+		GooGenerator gooGen = new GooGenerator();
+
+		AbsPipe pipe = new StarterPipeWest();
+		playingField.getTile(3, 3).setCurrentPipe(pipe);
+
+	    playingField.getTile(2,3).setCurrentPipe(new SouthEastElbowPipe());
+	    playingField.getTile(2,2).setCurrentPipe(new VerticalPipe());
+	    playingField.getTile(2,1).setCurrentPipe(new VerticalPipe());
+	    playingField.getTile(2,0).setCurrentPipe(new NorthWestElbowPipe());
+	    playingField.getTile(1,0).setCurrentPipe(new VerticalPipe()); //this pipe screws it up
+	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
+	    
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		pipeModel.addGooChangeListener(this);
+
+		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		
+		for (int i = 0; i < (5*GOO_COUNT); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,0).getCurrentPipe().getCurrentState().equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(1,0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		assertTrue(gooBlockedCalled == false);
+		
+		for (int i = 0; i < (GOO_COUNT*2); i++) {
+			pipeModel.gooAdvanced();
+		}
+		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		assertTrue(gooBlockedCalled == true);
+
+	}
+	
+	/**
+	 * Pipe blocks itself
+	 *//*
+	@Test
+	public void testPipeBlocksItself() {
+        resetCalled();
+        
+		TileModel playingField = new TileModel(5, 5);
+		GooGenerator gooGen = new GooGenerator();
+
+		AbsPipe pipe = new StarterPipeWest();
+		playingField.getTile(3, 3).setCurrentPipe(pipe);
+
+	    playingField.getTile(2,3).setCurrentPipe(new SouthEastElbowPipe());
+	    playingField.getTile(2,2).setCurrentPipe(new VerticalPipe());
+	    playingField.getTile(2,1).setCurrentPipe(new VerticalPipe());
+	    playingField.getTile(2,0).setCurrentPipe(new NorthWestElbowPipe());
+	    playingField.getTile(1,0).setCurrentPipe(new VerticalPipe()); //this pipe screws it up
+	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
+	    
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		pipeModel.addGooChangeListener(this);
+
+		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		
+		for (int i = 0; i < (5*GOO_COUNT); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,0).getCurrentPipe().getCurrentState().equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(1,0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		assertTrue(gooBlockedCalled == false);
+		
+		for (int i = 0; i < (GOO_COUNT*2); i++) {
+			pipeModel.gooAdvanced();
+		}
+		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		assertTrue(gooBlockedCalled == true);
+
+	}
+	
+	*/
     //@todo: cross-pipe
 	//@todo: pipe stops in the end piece
 	

@@ -39,8 +39,8 @@ public class TileModel {
 	private Tile[][] tileGrid;
 
 	public TileModel(int numTilesWide, int numTilesHigh) {
-		this.numTilesHigh = numTilesWide;
-		this.numTilesWide = numTilesHigh;
+		this.setNumTilesHigh(numTilesWide);
+		this.setNumTilesWide(numTilesHigh);
 		tileGrid = new Tile[numTilesWide][numTilesHigh];
 
 		for (int x = 0; x < numTilesWide; x++) {
@@ -52,7 +52,7 @@ public class TileModel {
 	}
 
 	public Tile getTile(int x, int y) {
-		if(x<this.numTilesWide && y<this.numTilesHigh){
+		if(x<this.getNumTilesWide() && y<this.getNumTilesHigh()){
 		  return this.tileGrid[x][y];
 		}else{
 			return null;
@@ -100,7 +100,7 @@ public class TileModel {
 		if(tile==null){
 			return null;
 		}
-		if (tile.getX() >= this.numTilesWide-1) {
+		if (tile.getX() >= this.getNumTilesWide()-1) {
 			if (ignoreWalls) {
 				return getTile(0, tile.getY());
 			} else {
@@ -124,7 +124,7 @@ public class TileModel {
 		}
 		if (tile.getX() <= 0) {
 			if (ignoreWalls) {
-				return getTile(this.numTilesWide-1, tile.getY());
+				return getTile(this.getNumTilesWide()-1, tile.getY());
 			} else {
 				return null;
 			}
@@ -143,7 +143,7 @@ public class TileModel {
 		if(tile==null){
 			return null;
 		}
-		if (tile.getY() >= this.numTilesHigh-1) {
+		if (tile.getY() >= this.getNumTilesHigh()-1) {
 			if (ignoreWalls) {
 				return getTile(tile.getX(), 0);
 			} else {
@@ -166,12 +166,28 @@ public class TileModel {
 		}
 		if (tile.getY() <= 0) {
 			if (ignoreWalls) {
-				return getTile(tile.getX(), this.numTilesHigh-1);
+				return getTile(tile.getX(), this.getNumTilesHigh()-1);
 			} else {
 				return null;
 			}
 		}
 		return getTile(tile.getX(), tile.getY() - 1);
+	}
+
+	public int getNumTilesWide() {
+		return numTilesWide;
+	}
+
+	public void setNumTilesWide(int numTilesWide) {
+		this.numTilesWide = numTilesWide;
+	}
+
+	public int getNumTilesHigh() {
+		return numTilesHigh;
+	}
+
+	public void setNumTilesHigh(int numTilesHigh) {
+		this.numTilesHigh = numTilesHigh;
 	}
 
 }

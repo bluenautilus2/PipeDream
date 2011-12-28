@@ -11,7 +11,7 @@ public abstract class AbsPipe {
 	 * How many times the goo advances before the
 	 * pipe is full. Children can override
 	 */
-	protected int gooCount = 8;
+	protected int GOO_COUNT = 8;
 	
 	//Set if the tile has been laid down.
 	private Tile tile = null;
@@ -32,9 +32,9 @@ public abstract class AbsPipe {
 	 */
 	public void gooAdvance(){
 		
-		gooCount--;
+		GOO_COUNT--;
 		
-		if(gooCount==0){
+		if(GOO_COUNT==0){
 			this.setCurrentState(PipeState.FULL);
 		}
 		

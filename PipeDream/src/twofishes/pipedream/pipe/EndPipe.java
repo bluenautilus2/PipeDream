@@ -8,4 +8,9 @@ public class EndPipe extends AbsPipe {
 			return Entrance.BLOCKED;
 		
 	}
+	
+	@Override
+	public Entrance getExit(){
+		return Entrance.BLOCKED;
+	}
 }

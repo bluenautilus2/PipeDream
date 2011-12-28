@@ -14,8 +14,6 @@ import twofishes.pipedream.tile.TileState;
 
 public class PipeModel implements GooGeneratedListener {
 
-	AbsPipe starterPipe = null;
-
 	AbsPipe currentPipe = null;
 
 	ArrayList<GooChangeListener> gooChangeListeners = new ArrayList<GooChangeListener>();
@@ -24,7 +22,8 @@ public class PipeModel implements GooGeneratedListener {
 
 	TileModel playingField = null;
 
-	public PipeModel(TileModel tileModel, GooGenerator gooGenerator) {
+	public PipeModel(TileModel tileModel, GooGenerator gooGenerator, AbsPipe startingPipe) {
+		this.currentPipe = startingPipe;
 		this.playingField = tileModel;
 		this.gooGenerator = gooGenerator;
 		gooGenerator.addListener(this);
@@ -41,15 +40,11 @@ public class PipeModel implements GooGeneratedListener {
 
 		if (currentPipe.getCurrentState().equals(PipeState.FULL)) {
 			boolean stillGoing = this.findNextTileAndPipe();
-			if (stillGoing) {
-
-			} else {
+			if (!stillGoing) {
 				for (GooChangeListener listener : this.gooChangeListeners) {
 					listener.gooBlocked();
 				}
-
 			}
-
 		}
 	}
 
@@ -62,9 +57,11 @@ public class PipeModel implements GooGeneratedListener {
 	 * @return true if pipe still going, false if not
 	 */
 	private boolean findNextTileAndPipe() {
+
 		Entrance exit = this.currentPipe.getExit();
 		Tile newTile = null;
 		AbsPipe newPipe = null;
+		
 		if (exit.equals(Entrance.NORTH)) {
 			newTile = this.playingField.getTileToTheNorth(
 					this.currentPipe.getTile(), false);
@@ -81,6 +78,8 @@ public class PipeModel implements GooGeneratedListener {
 			newTile = this.playingField.getTileToTheWest(
 					this.currentPipe.getTile(), false);
 			newPipe = tryToStartNewPipe(newTile, Entrance.EAST);
+		} else if(exit.equals(Entrance.BLOCKED)){
+			return false;
 		}
 
 		if (newPipe != null) {
@@ -114,9 +113,10 @@ public class PipeModel implements GooGeneratedListener {
 		if (exit.equals(Entrance.BLOCKED)) {
 			return null;
 		}
-		
+
 		newTile.setTileLocked(true);
 		newPipe.gooEntering(entrance);
+		newPipe.setCurrentState(PipeState.FILLING);
 		return newPipe;
 	}
 }

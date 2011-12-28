@@ -178,14 +178,6 @@ public class TileModel {
 		return this.numTilesWide;
 	}
 	
-	public int getNumTilesHigh() {
-		return this.numTilesHigh;
-	}
-
-	public int getNumTilesWide() {
-		return numTilesWide;
-	}
-
 	public void setNumTilesWide(int numTilesWide) {
 		this.numTilesWide = numTilesWide;
 	}

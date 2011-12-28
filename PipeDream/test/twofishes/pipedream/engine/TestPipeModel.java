@@ -208,7 +208,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	
 	/**
 	 * Pipe blocks itself
-	 *//*
+	 */
 	@Test
 	public void testPipeBlocksItself() {
         resetCalled();
@@ -223,8 +223,8 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(2,2).setCurrentPipe(new VerticalPipe());
 	    playingField.getTile(2,1).setCurrentPipe(new VerticalPipe());
 	    playingField.getTile(2,0).setCurrentPipe(new NorthWestElbowPipe());
-	    playingField.getTile(1,0).setCurrentPipe(new VerticalPipe()); //this pipe screws it up
-	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
+	    playingField.getTile(1,0).setCurrentPipe(new NorthEastElbowPipe()); 
+	    playingField.getTile(1,1).setCurrentPipe(new SouthEastElbowPipe()); //this leads to 2,1
 	    
 		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
 		pipeModel.addGooChangeListener(this);
@@ -235,20 +235,21 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 			pipeModel.gooAdvanced();
 		}
 		
-		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(2,0).getCurrentPipe().getCurrentState().equals(PipeState.FILLING));
-		assertTrue(playingField.getTile(1,0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 		
-		for (int i = 0; i < (GOO_COUNT*2); i++) {
+		for (int i = 0; i < (GOO_COUNT*3); i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2, 0).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(1, 1).getCurrentPipe().getCurrentState().equals(PipeState.FULL));
+		
 		assertTrue(gooBlockedCalled == true);
 
 	}
 	
-	*/
+	
     //@todo: cross-pipe
 	//@todo: pipe stops in the end piece
 	

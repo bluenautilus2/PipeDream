@@ -10,6 +10,8 @@ import twofishes.pipedream.pipe.MovablePipes;
 
 public class TestPipeGenerator {
 
+	//test
+	
 	MovablePipes map = new MovablePipes();
 	PipeGenerator gen = new PipeGenerator(map);
 	

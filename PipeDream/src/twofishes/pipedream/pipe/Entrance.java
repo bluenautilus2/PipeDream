@@ -5,7 +5,8 @@ public enum Entrance{
 	SOUTH(),
 	EAST(),
 	WEST(),
-	BLOCKED();
+	BLOCKED(),
+	END();  //Used only in end pieces
 
 	public Entrance getOppositeSide() {
 		Entrance oside ;

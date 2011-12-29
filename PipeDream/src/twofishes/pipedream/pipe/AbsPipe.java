@@ -11,8 +11,8 @@ public abstract class AbsPipe {
 	 * How many times the goo advances before the pipe is full. Children can
 	 * override
 	 */
-	protected int gooCount ;
-	protected int startGooCount = 8 ;
+	protected int gooCount;
+	protected int startGooCount = 8;
 
 	// Set if the pipe is set into a tile
 	private Tile tile = null;
@@ -22,29 +22,13 @@ public abstract class AbsPipe {
 	public abstract Entrance getExit(Entrance entered);
 
 	public AbsPipe() {
-		this.gooCount = startGooCount ;
+		this.gooCount = startGooCount;
 	}
-	
+
 	/**
 	 * for pipes that affect goo
 	 */
 	public GooChangeListener gooChangeListener;
-
-	/**
-	 * GooChangeListener provided for child pipes that call it to speed up or
-	 * slow down flow. Also used by cross pipe to identify source of flow.
-	 * 
-	 * @param gooChangeListener
-	 * @return
-	 */
-	public Entrance getExit(GooChangeListener gooChangeListener)
-			throws Exception {
-
-		if (entranceEntered != null) {
-			return getExit(entranceEntered);
-		}
-		return null;
-	}
 
 	/**
 	 * Must be called when the pipe has been approved to receive the goo
@@ -69,21 +53,27 @@ public abstract class AbsPipe {
 	 * 
 	 * GooEvent used by special pipes
 	 */
-	public void gooAdvance(GooChangeListener gooChangeListener)
+	public Entrance gooAdvance(GooChangeListener gooChangeListener)
 			throws Exception {
 
 		if (this.entranceEntered == null) {
 			throw new Exception("Internal AbsPipe exception:"
-					+ " called goodAdvance before gooEntering");
+					+ " called gooAdvance before gooEntering");
+		}
+		// gooAdvance shouldn't get called on empty pipes
+		if (this.gooCount<=0){
+			throw new Exception("Shouldn't call gooAdvance() on empty pipes");
 		}
 
 		gooCount--;
 
 		// @todo update pipe animation and fire gui event
 
-		if (gooCount == 0) {
+		if (gooCount <= 0) {
 			this.setState(PipeState.FULL, gooChangeListener);
 		}
+
+		return this.getExit(this.entranceEntered);
 
 	}
 
@@ -103,7 +93,8 @@ public abstract class AbsPipe {
 		return state;
 	}
 
-	protected void setState(PipeState state, GooChangeListener listener) throws Exception {
+	protected void setState(PipeState state, GooChangeListener listener)
+			throws Exception {
 		this.state = state;
 	}
 

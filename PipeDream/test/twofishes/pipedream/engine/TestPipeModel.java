@@ -283,6 +283,9 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 			pipeModel.gooAdvanced();
 		}
 		
+		assertTrue(playingField.getTile(3,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		
+		
 		assertTrue(!cross.isHorizontalPipeFull());
 		assertTrue(cross.isVerticalPipeFull());
 		assertTrue(gooBlockedCalled == false);
@@ -291,20 +294,21 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 			pipeModel.gooAdvanced();
 		}
 		
+		assertTrue(playingField.getTile(3,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		
 		assertTrue(!cross.isHorizontalPipeFull());
 		assertTrue(cross.isVerticalPipeFull());
 		assertTrue(gooBlockedCalled == false);
 		
-		for (int i = 0; i < (GOO_COUNT*2); i++) {
+        for (int i = 0; i < 2; i++) {
 			pipeModel.gooAdvanced();
 		}
 		
 		assertTrue(cross.isHorizontalPipeFull());
 		assertTrue(cross.isVerticalPipeFull());
-		assertTrue(playingField.getTile(3,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
-		assertTrue(playingField.getTile(3,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
-		assertTrue(playingField.getTile(2,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
-		assertTrue(playingField.getTile(2,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		
 		assertTrue(gooBlockedCalled == true);
 	}
 	

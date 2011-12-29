@@ -45,25 +45,20 @@ public class CrossPipe extends AbsPipe {
 			this.horizontalPipe.gooEntering(entrance, listener);
 		}
 	}
-
-	/**
-	 * gooEntering must be called before this is called.
-	 */
+	
 	@Override
-	public Entrance getExit(GooChangeListener listener) throws Exception {
+	public Entrance gooAdvance(GooChangeListener listener) throws Exception {
+		
+		//gooAdvance shouldn't get called on empty pipes 
+		if(this.verticalPipe.gooCount==0&&this.horizontalPipe.gooCount==0){
+			throw new Exception("Shouldn't call gooAdvance() on empty pipes");
+		}
+		
 		AbsPipe pipe = this.getTargetPipe(listener);
 		if (pipe != null) {
-			return pipe.getExit(listener);
+			return pipe.gooAdvance(listener);
 		}
-		return null;
-	}
-
-	@Override
-	public void gooAdvance(GooChangeListener listener) throws Exception {
-		AbsPipe pipe = this.getTargetPipe(listener);
-		if (pipe != null) {
-			pipe.gooAdvance(listener);
-		}
+		return Entrance.BLOCKED;
 	}
 
 	/**
@@ -88,6 +83,24 @@ public class CrossPipe extends AbsPipe {
 		}
 	}
 
+	@Override
+	public PipeState getState(GooChangeListener listener) throws Exception {
+		//If they both have the same state, return it.
+		//this is the case when neither pipe has flow.
+		PipeState temp = this.verticalPipe.getState(listener);
+		if(temp.equals(this.horizontalPipe.getState(listener))){
+			return temp;
+		}
+		
+		//Otherwise, one has changed state. Determine correct
+		//pipe to return.
+		AbsPipe pipe = this.getTargetPipe(listener);
+		if (pipe != null) {
+			return pipe.getState(listener);
+		}
+		
+		return null;
+	}
 	/**
 	 * 
 	 * @param listener
@@ -135,6 +148,8 @@ public class CrossPipe extends AbsPipe {
 		}
 		return null;
 	}
+	
+	
 
 	private boolean isVertical(Entrance entrance) {
 		if (entrance.equals(Entrance.NORTH) || entrance.equals(Entrance.SOUTH)) {

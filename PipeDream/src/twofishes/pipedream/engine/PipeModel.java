@@ -28,10 +28,10 @@ public class PipeModel implements GooGeneratedListener {
 
 	public void gooAdvanced() throws Exception {
 
-		currentPipe.gooAdvance(this.gooChangeListener);
+		Entrance directionOfGoo = currentPipe.gooAdvance(this.gooChangeListener);
 
 		if (currentPipe.getState(this.gooChangeListener).equals(PipeState.FULL)) {
-			boolean stillGoing = this.findNextTileAndPipe();
+			boolean stillGoing = this.findNextTileAndPipe(directionOfGoo);
 			if (!stillGoing) {
 				this.gooChangeListener.gooBlocked();
 			}
@@ -46,29 +46,32 @@ public class PipeModel implements GooGeneratedListener {
 	 * 
 	 * @return true if pipe still going, false if not
 	 */
-	private boolean findNextTileAndPipe() throws Exception{
+	private boolean findNextTileAndPipe(Entrance exitOfLastTile) throws Exception{
 
-		Entrance exit = this.currentPipe.getExit(this.gooChangeListener);
 		Tile newTile = null;
 		AbsPipe newPipe = null;
 		
-		if (exit.equals(Entrance.NORTH)) {
+		if(exitOfLastTile.equals(Entrance.END)){
+			return false;
+		}
+		
+		if (exitOfLastTile.equals(Entrance.NORTH)) {
 			newTile = this.playingField.getTileToTheNorth(
 					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.SOUTH);
-		} else if (exit.equals(Entrance.SOUTH)) {
+		} else if (exitOfLastTile.equals(Entrance.SOUTH)) {
 			newTile = this.playingField.getTileToTheSouth(
 					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.NORTH);
-		} else if (exit.equals(Entrance.EAST)) {
+		} else if (exitOfLastTile.equals(Entrance.EAST)) {
 			newTile = this.playingField.getTileToTheEast(
 					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.WEST);
-		} else if (exit.equals(Entrance.WEST)) {
+		} else if (exitOfLastTile.equals(Entrance.WEST)) {
 			newTile = this.playingField.getTileToTheWest(
 					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.EAST);
-		} else if(exit.equals(Entrance.BLOCKED)){
+		} else if(exitOfLastTile.equals(Entrance.BLOCKED)){
 			return false;
 		}
 

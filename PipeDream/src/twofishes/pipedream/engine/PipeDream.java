@@ -8,7 +8,8 @@ import twofishes.pipedream.tile.TileModel;
 
 public class PipeDream {
 
-	final public static int GRID_SIZE = 15;
+	final public static int GRID_NUM_TILES_HIGH = 8;
+	final public static int GRID_NUM_TILES_WIDE = 10;
 	
 	/**
 	 * @param args
@@ -19,7 +20,7 @@ public class PipeDream {
 		PipeGenerator pipeGenerator = new PipeGenerator(new MovablePipes());
 		
 		//Init the TileModel
-		TileModel tileModel = new TileModel(GRID_SIZE, GRID_SIZE);
+		TileModel tileModel = new TileModel(GRID_NUM_TILES_WIDE, GRID_NUM_TILES_HIGH);
 		GridView gridView = new GridView();
 		gridView.setTileModel(tileModel);
 		
@@ -29,6 +30,7 @@ public class PipeDream {
 		gamePanel.setGrid(gridView);
 	
 		theFrame.setContentPane(gamePanel);
+		//theFrame.setResizable(false);
 		theFrame.pack();
 		theFrame.setVisible(true);
 

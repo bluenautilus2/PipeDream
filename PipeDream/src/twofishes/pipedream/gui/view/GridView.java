@@ -2,6 +2,7 @@ package twofishes.pipedream.gui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -25,10 +26,11 @@ public class GridView extends AbsView implements IGridView {
 		this.tileModel = tileModel;
 		
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		
 		
 		for(int i = 0; i < tileModel.getNumTilesHigh(); i++) {
-			for (int j = 0; j < tileModel.getNumTilesHigh(); j++) {
+			for (int j = 0; j < tileModel.getNumTilesWide(); j++) {
+				GridBagConstraints c = new GridBagConstraints();
 				c.gridx = i;
 				c.gridy = j;
 				
@@ -36,6 +38,8 @@ public class GridView extends AbsView implements IGridView {
 				TileView tileView = new TileView();
 				Tile tile = this.tileModel.getTile(i, j);
 				tileView.setTile(tile);
+				
+				tileView.setPreferredSize(new Dimension(50, 50));
 				
 				
 				this.add(tileView, c);
@@ -48,6 +52,11 @@ public class GridView extends AbsView implements IGridView {
     {
        super.paintComponent(g);
        
+       
+Graphics2D g2 = (Graphics2D)g;
+       
+       g2.setColor(Color.BLACK);
+       g2.drawRect(0, 0, 499, 399);
        // Any special drawing that needs to be done for the grid itself
     }
 }

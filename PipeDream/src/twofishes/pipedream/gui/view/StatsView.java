@@ -4,7 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import javax.inject.Inject;
+
+import twofishes.pipedream.stats.Stats;
+
 public class StatsView extends AbsView {
+	private Stats stats;
+	
+	@Inject
+	public StatsView(Stats stats) {
+		this.stats = stats;
+	}
+	
+	
 	public void paintComponent(Graphics g)
     {
        super.paintComponent(g);

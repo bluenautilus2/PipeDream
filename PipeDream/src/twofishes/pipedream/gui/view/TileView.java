@@ -4,19 +4,20 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-
+import twofishes.pipedream.gui.controller.TileController;
 import twofishes.pipedream.pipe.AbsPipe;
 import twofishes.pipedream.pipe.CrossPipe;
 import twofishes.pipedream.pipe.Entrance;
 import twofishes.pipedream.pipe.HorizontalPipe;
 import twofishes.pipedream.pipe.NorthEastElbowPipe;
 import twofishes.pipedream.pipe.NorthWestElbowPipe;
-import twofishes.pipedream.pipe.PipeState;
 import twofishes.pipedream.pipe.SouthEastElbowPipe;
 import twofishes.pipedream.pipe.SouthWestElbowPipe;
 import twofishes.pipedream.pipe.StarterPipeEast;
@@ -26,46 +27,79 @@ import twofishes.pipedream.pipe.StarterPipeWest;
 import twofishes.pipedream.pipe.VerticalPipe;
 import twofishes.pipedream.tile.Tile;
 
-public class TileView extends AbsView implements ITileView {
 
+public class TileView extends AbsView implements ITileView, MouseListener {
 	private Tile tile;
 	
 	private Dimension dim ;
 	
 	public TileView() {
-		
+		addMouseListener(this);
 	}
 	
 	public void setTile(Tile tile) {
 		this.tile = tile;
 		dim = new Dimension(50, 50) ;
 		this.setPreferredSize(dim) ;
+		this.setSize(50, 50);
 	}
 	
 	public void paintComponent(Graphics g)
     {
        super.paintComponent(g);
 
+       
+       
        Graphics2D g2 = (Graphics2D)g;
 
        AbsPipe pipe = tile.getCurrentPipe() ;       
        
-       //draw black background
        g2.setColor(Color.BLACK);
-       g2.fillRect(0, 0, this.getWidth(),  this.getHeight());
 
-       //draw pipe
+       g2.drawRect(0, 0, 49, 49);
+       //g2.drawLine(50, 0, 50, 50);
+
        paintPipe(g2, pipe) ;
        
+       //draw red rectangle
+       g2.setColor(Color.RED);
+       //g2.fillRect(0, 0, 10, 10);
+
        //draw border
        g2.setColor(Color.BLUE);
-       g2.drawRect(0, 0, this.getWidth(),  this.getHeight());
+       g2.drawRect(0, 0, 49, 49);
        
        //draw coords
        g2.setColor(Color.RED) ;
        g2.drawString(tile.getX() + "," + tile.getY(), 0, this.getHeight()) ;
        
     }
+
+	public void mouseClicked(MouseEvent arg0) {
+		//TODO Don't create new TileController here - Inject singleton instead
+		TileController tileController = new TileController();
+		tileController.handleClick(this.tile);
+	}
+
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private void paintPipe(Graphics2D g2, AbsPipe pipe) {
 		//TODO use bitmaps
@@ -363,5 +397,4 @@ public class TileView extends AbsView implements ITileView {
 		g.drawPolygon(new int[] {s1x1,s1x2, s2x1, s2x2} , new int[] {s1y1,s1y2,s2y1,s2y2}, 4) ;
 		//g.drawLine(s1x, s1y, s2x, s2y) ;
 	}	
-	
 }

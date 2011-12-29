@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import twofishes.pipedream.gui.view.GridView;
@@ -11,23 +12,29 @@ import twofishes.pipedream.gui.view.StatsView;
 
 public class GamePanel extends JPanel {
 	
-	GridView grid;
-	StatsView stats;
+	private GridView grid;
+	private StatsView stats;
+	
+	private JScrollPane gridScrollPane = new JScrollPane() ;
 	
 	public GamePanel() {
-		//TODO Set these dynamically
-		this.stats = new StatsView();
-		
-		super.add(stats, BorderLayout.NORTH);
+		this.setLayout(new BorderLayout()) ;
+		super.add(gridScrollPane, BorderLayout.CENTER);
 		super.setBorder(new EmptyBorder(8, 8, 8, 8));
+		
+		//TODO Set these dynamically
+		setStats(new StatsView()) ;
+
 	}
 
 	public void setGrid(GridView grid) {
 		this.grid = grid;
-		super.add(grid, BorderLayout.SOUTH);
+		gridScrollPane.setViewportView(this.grid) ;
+
 	}
 
 	public void setStats(StatsView stats) {
 		this.stats = stats;
+		super.add(this.stats, BorderLayout.NORTH);
 	}
 }

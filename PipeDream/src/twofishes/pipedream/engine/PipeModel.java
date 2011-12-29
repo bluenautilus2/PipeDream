@@ -21,13 +21,18 @@ public class PipeModel implements GooGeneratedListener {
 	GooGenerator gooGenerator = null;
 
 	TileModel playingField = null;
+	
+	boolean ignoreWalls = false ;
 
-	public PipeModel(TileModel tileModel, GooGenerator gooGenerator, AbsPipe startingPipe) {
+	public PipeModel(TileModel tileModel, GooGenerator gooGenerator, AbsPipe startingPipe, boolean ignoreWalls) {
 		this.currentPipe = startingPipe;
 		this.playingField = tileModel;
 		this.gooGenerator = gooGenerator;
-		gooGenerator.addListener(this);
-		addGooChangeListener(gooGenerator);
+		this.ignoreWalls = ignoreWalls ;
+		if(gooGenerator != null) {
+			gooGenerator.addListener(this);
+			addGooChangeListener(gooGenerator);
+		}
 	}
 
 	public void addGooChangeListener(GooChangeListener listener) {
@@ -64,19 +69,19 @@ public class PipeModel implements GooGeneratedListener {
 		
 		if (exit.equals(Entrance.NORTH)) {
 			newTile = this.playingField.getTileToTheNorth(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWalls);
 			newPipe = tryToStartNewPipe(newTile, Entrance.SOUTH);
 		} else if (exit.equals(Entrance.SOUTH)) {
 			newTile = this.playingField.getTileToTheSouth(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWalls);
 			newPipe = tryToStartNewPipe(newTile, Entrance.NORTH);
 		} else if (exit.equals(Entrance.EAST)) {
 			newTile = this.playingField.getTileToTheEast(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWalls);
 			newPipe = tryToStartNewPipe(newTile, Entrance.WEST);
 		} else if (exit.equals(Entrance.WEST)) {
 			newTile = this.playingField.getTileToTheWest(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWalls);
 			newPipe = tryToStartNewPipe(newTile, Entrance.EAST);
 		} else if(exit.equals(Entrance.BLOCKED)){
 			return false;
@@ -119,4 +124,5 @@ public class PipeModel implements GooGeneratedListener {
 		newPipe.setCurrentState(PipeState.FILLING);
 		return newPipe;
 	}
+
 }

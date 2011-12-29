@@ -50,7 +50,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 			playingField.getTile(i, 10).setCurrentPipe(newPipe);
 		}
 
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe, false);
 		pipeModel.addGooChangeListener(this);
 
 		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
@@ -98,7 +98,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(9, 7).setCurrentPipe(new NorthEastElbowPipe());
 	    playingField.getTile(10, 7).setCurrentPipe(new HorizontalPipe());
 	   
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe, false);
 		pipeModel.addGooChangeListener(this);
 
 		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
@@ -141,7 +141,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(1,0).setCurrentPipe(new HorizontalPipe());
 	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
 	    
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe, false);
 		pipeModel.addGooChangeListener(this);
 
 		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));
@@ -184,7 +184,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    playingField.getTile(1,0).setCurrentPipe(new VerticalPipe()); //this pipe screws it up
 	    playingField.getTile(0,0).setCurrentPipe(new HorizontalPipe());
 	    
-		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe);
+		PipeModel pipeModel = new PipeModel(playingField, gooGen, pipe, false);
 		pipeModel.addGooChangeListener(this);
 
 		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getCurrentState().equals(PipeState.EMPTY));

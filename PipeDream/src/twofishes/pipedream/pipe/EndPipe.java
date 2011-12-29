@@ -1,5 +1,7 @@
 package twofishes.pipedream.pipe;
 
+import twofishes.pipedream.engine.goo.GooChangeListener;
+
 
 public class EndPipe extends AbsPipe {
 
@@ -10,7 +12,7 @@ public class EndPipe extends AbsPipe {
 	}
 	
 	@Override
-	public Entrance getExit(){
+	public Entrance getExit(GooChangeListener listener){
 		return Entrance.BLOCKED;
 	}
 }

@@ -39,8 +39,8 @@ public class TileModel {
 	private Tile[][] tileGrid;
 
 	public TileModel(int numTilesWide, int numTilesHigh) {
-		this.setNumTilesHigh(numTilesWide);
-		this.setNumTilesWide(numTilesHigh);
+		this.setNumTilesHigh(numTilesHigh);
+		this.setNumTilesWide(numTilesWide);
 		tileGrid = new Tile[numTilesWide][numTilesHigh];
 
 		for (int x = 0; x < numTilesWide; x++) {
@@ -178,7 +178,7 @@ public class TileModel {
 		return this.numTilesWide;
 	}
 	
-	public void setNumTilesWide(int numTilesWide) {
+	private void setNumTilesWide(int numTilesWide) {
 		this.numTilesWide = numTilesWide;
 	}
 
@@ -186,7 +186,7 @@ public class TileModel {
 		return numTilesHigh;
 	}
 
-	public void setNumTilesHigh(int numTilesHigh) {
+	private void setNumTilesHigh(int numTilesHigh) {
 		this.numTilesHigh = numTilesHigh;
 	}
 

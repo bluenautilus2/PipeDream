@@ -1,54 +1,39 @@
 package twofishes.pipedream.engine;
 
-import java.util.ArrayList;
-
 import twofishes.pipedream.engine.goo.GooChangeListener;
+
 import twofishes.pipedream.engine.goo.GooGeneratedListener;
-import twofishes.pipedream.engine.goo.GooGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
 import twofishes.pipedream.pipe.Entrance;
 import twofishes.pipedream.pipe.PipeState;
 import twofishes.pipedream.tile.Tile;
 import twofishes.pipedream.tile.TileModel;
-import twofishes.pipedream.tile.TileState;
 
 public class PipeModel implements GooGeneratedListener {
 
 	AbsPipe currentPipe = null;
 
-	ArrayList<GooChangeListener> gooChangeListeners = new ArrayList<GooChangeListener>();
-
-	GooGenerator gooGenerator = null;
+	GooChangeListener gooChangeListener = null;
 
 	TileModel playingField = null;
 	
-	boolean ignoreWalls = false ;
+	boolean ignoreWall ;
 
-	public PipeModel(TileModel tileModel, GooGenerator gooGenerator, AbsPipe startingPipe, boolean ignoreWalls) {
+	public PipeModel(TileModel tileModel, GooChangeListener gooChangeListener, AbsPipe startingPipe, boolean ignoreWall) {
 		this.currentPipe = startingPipe;
 		this.playingField = tileModel;
-		this.gooGenerator = gooGenerator;
-		this.ignoreWalls = ignoreWalls ;
-		if(gooGenerator != null) {
-			gooGenerator.addListener(this);
-			addGooChangeListener(gooGenerator);
-		}
+		this.gooChangeListener = gooChangeListener;
+		this.ignoreWall = ignoreWall ;
 	}
 
-	public void addGooChangeListener(GooChangeListener listener) {
-		this.gooChangeListeners.add(listener);
-	}
+	public void gooAdvanced() throws Exception {
 
-	public void gooAdvanced() {
+		currentPipe.gooAdvance(this.gooChangeListener);
 
-		currentPipe.gooAdvance();
-
-		if (currentPipe.getCurrentState().equals(PipeState.FULL)) {
+		if (currentPipe.getState(this.gooChangeListener).equals(PipeState.FULL)) {
 			boolean stillGoing = this.findNextTileAndPipe();
 			if (!stillGoing) {
-				for (GooChangeListener listener : this.gooChangeListeners) {
-					listener.gooBlocked();
-				}
+				this.gooChangeListener.gooBlocked();
 			}
 		}
 }
@@ -61,27 +46,27 @@ public class PipeModel implements GooGeneratedListener {
 	 * 
 	 * @return true if pipe still going, false if not
 	 */
-	private boolean findNextTileAndPipe() {
+	private boolean findNextTileAndPipe() throws Exception{
 
-		Entrance exit = this.currentPipe.getExit();
+		Entrance exit = this.currentPipe.getExit(this.gooChangeListener);
 		Tile newTile = null;
 		AbsPipe newPipe = null;
 		
 		if (exit.equals(Entrance.NORTH)) {
 			newTile = this.playingField.getTileToTheNorth(
-					this.currentPipe.getTile(), ignoreWalls);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.SOUTH);
 		} else if (exit.equals(Entrance.SOUTH)) {
 			newTile = this.playingField.getTileToTheSouth(
-					this.currentPipe.getTile(), ignoreWalls);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.NORTH);
 		} else if (exit.equals(Entrance.EAST)) {
 			newTile = this.playingField.getTileToTheEast(
-					this.currentPipe.getTile(), ignoreWalls);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.WEST);
 		} else if (exit.equals(Entrance.WEST)) {
 			newTile = this.playingField.getTileToTheWest(
-					this.currentPipe.getTile(), ignoreWalls);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.EAST);
 		} else if(exit.equals(Entrance.BLOCKED)){
 			return false;
@@ -103,7 +88,7 @@ public class PipeModel implements GooGeneratedListener {
 	 * 
 	 * @param pipe
 	 */
-	private AbsPipe tryToStartNewPipe(Tile newTile, Entrance entrance) {
+	private AbsPipe tryToStartNewPipe(Tile newTile, Entrance entrance) throws Exception {
 		if (newTile == null) {
 			// Then we hit a wall
 			return null;
@@ -120,9 +105,8 @@ public class PipeModel implements GooGeneratedListener {
 		}
 
 		newTile.setTileLocked(true);
-		newPipe.gooEntering(entrance);
-		newPipe.setCurrentState(PipeState.FILLING);
+		newPipe.gooEntering(entrance, gooChangeListener);
+		
 		return newPipe;
 	}
-
 }

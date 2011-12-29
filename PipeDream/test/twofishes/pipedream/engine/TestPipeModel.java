@@ -9,6 +9,7 @@ import org.junit.Test;
 import twofishes.pipedream.engine.goo.GooChangeListener;
 import twofishes.pipedream.engine.goo.GooGenerator;
 import twofishes.pipedream.pipe.AbsPipe;
+import twofishes.pipedream.pipe.CrossPipe;
 import twofishes.pipedream.pipe.HorizontalPipe;
 import twofishes.pipedream.pipe.NorthEastElbowPipe;
 import twofishes.pipedream.pipe.NorthWestElbowPipe;
@@ -17,6 +18,7 @@ import twofishes.pipedream.pipe.PipeState;
 import twofishes.pipedream.pipe.SouthEastElbowPipe;
 import twofishes.pipedream.pipe.SouthWestElbowPipe;
 import twofishes.pipedream.pipe.StarterPipeEast;
+import twofishes.pipedream.pipe.StarterPipeSouth;
 import twofishes.pipedream.pipe.StarterPipeWest;
 import twofishes.pipedream.pipe.VerticalPipe;
 import twofishes.pipedream.tile.TileModel;
@@ -58,27 +60,27 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 
 		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
-		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		
 		
 		for (int i = 0; i < ((pipeNum)*GOO_COUNT)-1; i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(7, 10).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 	
 		for (int i = 0; i < (GOO_COUNT/2); i++) {
 			pipeModel.gooAdvanced();
 		}
 		
-		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState(this).equals(PipeState.FILLING));
 		
 		//should try to advance beyond end of last pipe
 		for (int i = 0; i < GOO_COUNT; i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState(this).equals(PipeState.FULL));
 		assertTrue(gooBlockedCalled == true);
 
 	}
@@ -105,21 +107,21 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	   
 		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
-		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		
 		for (int i = 0; i < 50; i++) {
 			pipeModel.gooAdvanced();
 		}
 		
-		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(9, 7).getCurrentPipe().getState().equals(PipeState.FILLING));
-		assertTrue(playingField.getTile(10, 7).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(10, 10).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(9, 7).getCurrentPipe().getState(this).equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(10, 7).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 		
 		for (int i = 0; i < 16; i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(10, 7).getCurrentPipe().getState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(10, 7).getCurrentPipe().getState(this).equals(PipeState.FULL));
 		assertTrue(gooBlockedCalled == true);
 
 	}
@@ -146,21 +148,21 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    
 		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
-		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		
 		for (int i = 0; i < (5*GOO_COUNT); i++) {
 			pipeModel.gooAdvanced();
 		}
 		
-		assertTrue(playingField.getTile(2, 2).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(1,0).getCurrentPipe().getState().equals(PipeState.FILLING));
-		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(2, 2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(1,0).getCurrentPipe().getState(this).equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 		
 		for (int i = 0; i < (GOO_COUNT*2); i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(0, 0).getCurrentPipe().getState(this).equals(PipeState.FULL));
 		assertTrue(gooBlockedCalled == true);
 
 	}
@@ -187,21 +189,21 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    
 		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
-		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		
 		for (int i = 0; i < (5*GOO_COUNT)-1; i++) {
 			pipeModel.gooAdvanced();
 		}
 		
-		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(2,0).getCurrentPipe().getState().equals(PipeState.FILLING));
-		assertTrue(playingField.getTile(1,0).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,0).getCurrentPipe().getState(this).equals(PipeState.FILLING));
+		assertTrue(playingField.getTile(1,0).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == false);
 		
 		for (int i = 0; i < (GOO_COUNT*2); i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		assertTrue(gooBlockedCalled == true);
 
 	}
@@ -227,7 +229,7 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 	    
 		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
 
-		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState().equals(PipeState.EMPTY));
+		assertTrue(playingField.getTile(3, 3).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
 		
 		for (int i = 0; i < (5*GOO_COUNT); i++) {
 			pipeModel.gooAdvanced();
@@ -238,16 +240,75 @@ public class TestPipeModel extends TestCase implements GooChangeListener {
 		for (int i = 0; i < (GOO_COUNT*3); i++) {
 			pipeModel.gooAdvanced();
 		}
-		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(2, 0).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getState().equals(PipeState.FULL));
-		assertTrue(playingField.getTile(1, 1).getCurrentPipe().getState().equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2, 1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2, 0).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(1, 0).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(1, 1).getCurrentPipe().getState(this).equals(PipeState.FULL));
 		
 		assertTrue(gooBlockedCalled == true);
 
 	}
 	
-    //@todo: cross-pipe
+	/**
+	 * Pipe blocks itself
+	 */
+	@Test
+	public void testCrossPipe() throws Exception{
+        resetCalled();
+        
+		TileModel playingField = new TileModel(5, 5);
+		
+		AbsPipe pipe = new StarterPipeSouth();
+		playingField.getTile(3, 3).setCurrentPipe(pipe);
+
+		CrossPipe cross = new CrossPipe();
+	    playingField.getTile(3,2).setCurrentPipe(cross);
+	    playingField.getTile(3,1).setCurrentPipe(new NorthWestElbowPipe());
+	    playingField.getTile(2,1).setCurrentPipe(new NorthEastElbowPipe());
+	    playingField.getTile(2,2).setCurrentPipe(new SouthEastElbowPipe());
+	    
+		PipeModel pipeModel = new PipeModel(playingField, this, pipe);
+
+		assertTrue(playingField.getTile(3, 2).getCurrentPipe().getState(this).equals(PipeState.EMPTY));
+		
+		for (int i = 0; i < (GOO_COUNT+2); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(!cross.isHorizontalPipeFull());
+		assertTrue(!cross.isVerticalPipeFull());
+		assertTrue(gooBlockedCalled == false);
+		
+		for (int i = 0; i < (GOO_COUNT+1); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(!cross.isHorizontalPipeFull());
+		assertTrue(cross.isVerticalPipeFull());
+		assertTrue(gooBlockedCalled == false);
+		
+		for (int i = 0; i < (GOO_COUNT*3+3); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(!cross.isHorizontalPipeFull());
+		assertTrue(cross.isVerticalPipeFull());
+		assertTrue(gooBlockedCalled == false);
+		
+		for (int i = 0; i < (GOO_COUNT*2); i++) {
+			pipeModel.gooAdvanced();
+		}
+		
+		assertTrue(cross.isHorizontalPipeFull());
+		assertTrue(cross.isVerticalPipeFull());
+		assertTrue(playingField.getTile(3,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(3,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,1).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(playingField.getTile(2,2).getCurrentPipe().getState(this).equals(PipeState.FULL));
+		assertTrue(gooBlockedCalled == true);
+	}
+	
+    
 	//@todo: pipe stops in the end piece
 	//@todo: slow down
 	//@todo: speed up

@@ -29,7 +29,7 @@ public class PipeModel implements GooGeneratedListener {
 
 		currentPipe.gooAdvance(this.gooChangeListener);
 
-		if (currentPipe.getState().equals(PipeState.FULL)) {
+		if (currentPipe.getState(this.gooChangeListener).equals(PipeState.FULL)) {
 			boolean stillGoing = this.findNextTileAndPipe();
 			if (!stillGoing) {
 				this.gooChangeListener.gooBlocked();
@@ -105,7 +105,7 @@ public class PipeModel implements GooGeneratedListener {
 
 		newTile.setTileLocked(true);
 		newPipe.gooEntering(entrance, gooChangeListener);
-		newPipe.setState(PipeState.FILLING);
+		
 		return newPipe;
 	}
 }

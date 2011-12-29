@@ -53,7 +53,7 @@ public abstract class AbsPipe {
 		// Pipe Behavior
 		// Like slowing down the goo, etc.
 
-		this.setState(PipeState.FILLING);
+		this.setState(PipeState.FILLING, listener);
 		this.setEntranceEntered(entrance);
 		this.gooChangeListener = listener;
 
@@ -77,7 +77,7 @@ public abstract class AbsPipe {
 		// @todo update pipe animation and fire gui event
 
 		if (gooCount == 0) {
-			this.setState(PipeState.FULL);
+			this.setState(PipeState.FULL, gooChangeListener);
 		}
 
 	}
@@ -91,15 +91,15 @@ public abstract class AbsPipe {
 
 		// Children can override this to trigger specific
 		// Pipe Behavior
-		this.setState(PipeState.FULL);
+		this.setState(PipeState.FULL, listener);
 	}
 
-	public PipeState getState() {
+	public PipeState getState(GooChangeListener listener) throws Exception {
 		return state;
 	}
 
-	public void setState(PipeState currentState) {
-		this.state = currentState;
+	protected void setState(PipeState state, GooChangeListener listener) throws Exception {
+		this.state = state;
 	}
 
 	public Entrance getEntranceEntered() {

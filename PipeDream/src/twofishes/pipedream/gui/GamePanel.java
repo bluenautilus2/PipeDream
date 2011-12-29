@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import twofishes.pipedream.gui.view.GridView;
@@ -15,8 +16,10 @@ import twofishes.pipedream.stats.Stats;
 
 public class GamePanel extends JPanel {
 	
-	GridView grid;
-	StatsView stats;
+	private GridView grid;
+	private StatsView stats;
+	
+	//private JScrollPane gridScrollPane = new JScrollPane() ;
 	
 	public GamePanel() {
 		//TODO Set these dynamically
@@ -33,6 +36,7 @@ public class GamePanel extends JPanel {
 
 	public void setGrid(GridView grid) {
 		this.grid = grid;
+
 		//TOOD Hard coded for now
 		grid.setPreferredSize(new Dimension(500,400));
 		
@@ -41,9 +45,13 @@ public class GamePanel extends JPanel {
 		c.gridy=1;
 		
 		super.add(grid, c);
+
+		//gridScrollPane.setViewportView(this.grid) ;
+
 	}
 
 	public void setStats(StatsView stats) {
 		this.stats = stats;
+		super.add(this.stats, BorderLayout.NORTH);
 	}
 }

@@ -17,19 +17,20 @@ public class PipeModel implements GooGeneratedListener {
 
 	TileModel playingField = null;
 	
-	
+	boolean ignoreWall ;
 
-	public PipeModel(TileModel tileModel, GooChangeListener gooChangeListener, AbsPipe startingPipe) {
+	public PipeModel(TileModel tileModel, GooChangeListener gooChangeListener, AbsPipe startingPipe, boolean ignoreWall) {
 		this.currentPipe = startingPipe;
 		this.playingField = tileModel;
 		this.gooChangeListener = gooChangeListener;
+		this.ignoreWall = ignoreWall ;
 	}
 
 	public void gooAdvanced() throws Exception {
 
 		currentPipe.gooAdvance(this.gooChangeListener);
 
-		if (currentPipe.getState().equals(PipeState.FULL)) {
+		if (currentPipe.getState(this.gooChangeListener).equals(PipeState.FULL)) {
 			boolean stillGoing = this.findNextTileAndPipe();
 			if (!stillGoing) {
 				this.gooChangeListener.gooBlocked();
@@ -53,19 +54,19 @@ public class PipeModel implements GooGeneratedListener {
 		
 		if (exit.equals(Entrance.NORTH)) {
 			newTile = this.playingField.getTileToTheNorth(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.SOUTH);
 		} else if (exit.equals(Entrance.SOUTH)) {
 			newTile = this.playingField.getTileToTheSouth(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.NORTH);
 		} else if (exit.equals(Entrance.EAST)) {
 			newTile = this.playingField.getTileToTheEast(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.WEST);
 		} else if (exit.equals(Entrance.WEST)) {
 			newTile = this.playingField.getTileToTheWest(
-					this.currentPipe.getTile(), false);
+					this.currentPipe.getTile(), ignoreWall);
 			newPipe = tryToStartNewPipe(newTile, Entrance.EAST);
 		} else if(exit.equals(Entrance.BLOCKED)){
 			return false;
@@ -105,7 +106,7 @@ public class PipeModel implements GooGeneratedListener {
 
 		newTile.setTileLocked(true);
 		newPipe.gooEntering(entrance, gooChangeListener);
-		newPipe.setState(PipeState.FILLING);
+		
 		return newPipe;
 	}
 }

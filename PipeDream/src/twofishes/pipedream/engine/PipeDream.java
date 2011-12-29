@@ -21,6 +21,7 @@ public class PipeDream {
 		
 		//Init the TileModel
 		TileModel tileModel = new TileModel(GRID_NUM_TILES_WIDE, GRID_NUM_TILES_HIGH);
+
 		GridView gridView = new GridView();
 		gridView.setTileModel(tileModel);
 		

@@ -28,15 +28,15 @@ public class CrossPipe extends AbsPipe {
 		} else if (isHorizontal(entered)) {
 			return horizontalPipe.getExit(entered);
 		}
-		//only way to get here is to pass in Blocked
+		// only way to get here is to pass in Blocked
 		return Entrance.BLOCKED;
 	}
 
-	
-
 	@Override
-	public void gooEntering(Entrance entrance, GooChangeListener listener) throws Exception {
-
+	public void gooEntering(Entrance entrance, GooChangeListener listener)
+			throws Exception {
+		this.gooChangeListener = listener;
+		
 		if (isVertical(entrance)) {
 			this.verticalPipe.gooEntering(entrance, listener);
 		}
@@ -45,25 +45,25 @@ public class CrossPipe extends AbsPipe {
 			this.horizontalPipe.gooEntering(entrance, listener);
 		}
 	}
-	
+
 	/**
 	 * gooEntering must be called before this is called.
 	 */
 	@Override
 	public Entrance getExit(GooChangeListener listener) throws Exception {
-         AbsPipe pipe = this.getTargetPipe(listener);
-         if(pipe!=null){
-        	 return pipe.getExit(listener);
-         }
-         return null;
+		AbsPipe pipe = this.getTargetPipe(listener);
+		if (pipe != null) {
+			return pipe.getExit(listener);
+		}
+		return null;
 	}
 
 	@Override
 	public void gooAdvance(GooChangeListener listener) throws Exception {
-		 AbsPipe pipe = this.getTargetPipe(listener);
-         if(pipe!=null){
-        	 pipe.gooAdvance(listener);
-         }
+		AbsPipe pipe = this.getTargetPipe(listener);
+		if (pipe != null) {
+			pipe.gooAdvance(listener);
+		}
 	}
 
 	/**
@@ -72,13 +72,21 @@ public class CrossPipe extends AbsPipe {
 	 * be full on the same call.
 	 */
 	@Override
-	public void pipeFull(GooChangeListener listener)  throws Exception{
-		  AbsPipe pipe = this.getTargetPipe(listener);
-	         if(pipe!=null){
-	        	 pipe.pipeFull(listener);
-	         }
+	public void pipeFull(GooChangeListener listener) throws Exception {
+		AbsPipe pipe = this.getTargetPipe(listener);
+		if (pipe != null) {
+			pipe.pipeFull(listener);
+		}
 	}
 
+	@Override
+	protected void setState(PipeState state, GooChangeListener listener)
+			throws Exception {
+		AbsPipe pipe = this.getTargetPipe(listener);
+		if (pipe != null) {
+			pipe.setState(state, listener);
+		}
+	}
 
 	/**
 	 * 
@@ -107,12 +115,12 @@ public class CrossPipe extends AbsPipe {
 		 * will be filled by the same source
 		 */
 		if (vert && horiz) {
-			if (this.verticalPipe.getState().equals(PipeState.FULL)
-					&& (!this.horizontalPipe.getState().equals(PipeState.FULL))) {
+			if (this.verticalPipe.getState(gooChangeListener).equals(PipeState.FULL)
+					&& (!this.horizontalPipe.getState(gooChangeListener).equals(PipeState.FULL))) {
 				return this.horizontalPipe;
 			}
-			if ((!this.verticalPipe.getState().equals(PipeState.FULL))
-					&& (this.horizontalPipe.getState().equals(PipeState.FULL))) {
+			if ((!this.verticalPipe.getState(gooChangeListener).equals(PipeState.FULL))
+					&& (this.horizontalPipe.getState(gooChangeListener).equals(PipeState.FULL))) {
 				return this.verticalPipe;
 			}
 			throw new Exception("Internal crosspipe exception:"
@@ -127,7 +135,7 @@ public class CrossPipe extends AbsPipe {
 		}
 		return null;
 	}
-	
+
 	private boolean isVertical(Entrance entrance) {
 		if (entrance.equals(Entrance.NORTH) || entrance.equals(Entrance.SOUTH)) {
 			return true;
@@ -137,6 +145,31 @@ public class CrossPipe extends AbsPipe {
 
 	private boolean isHorizontal(Entrance entrance) {
 		if (entrance.equals(Entrance.EAST) || entrance.equals(Entrance.WEST)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Used for testing and troubleshooting
+	 * 
+	 * @return
+	 */
+	public boolean isHorizontalPipeFull() throws Exception {
+
+		if (this.horizontalPipe.getState(gooChangeListener).equals(PipeState.FULL)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Used for testing, troubleshooting
+	 * 
+	 * @return
+	 */
+	public boolean isVerticalPipeFull() throws Exception {
+		if (this.verticalPipe.getState(gooChangeListener).equals(PipeState.FULL)) {
 			return true;
 		}
 		return false;

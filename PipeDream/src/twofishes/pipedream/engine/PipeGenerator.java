@@ -23,6 +23,7 @@ public class PipeGenerator {
 		int index = positiveNextInt % (pipeClassList.size());
 		Class<? extends AbsPipe> pipeClass = pipeClassList.get(index);
 		try {
+			System.out.println("getNewPipe: " + pipeClass.getName()) ;
 			return pipeClass.newInstance();
 		} catch (Exception e) {
 			System.out.println("Exception Thrown from PipeGenerator: " + e);

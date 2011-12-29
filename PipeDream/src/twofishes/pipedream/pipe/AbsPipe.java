@@ -11,7 +11,8 @@ public abstract class AbsPipe {
 	 * How many times the goo advances before the pipe is full. Children can
 	 * override
 	 */
-	protected int gooCount = 8;
+	protected int gooCount ;
+	protected int startGooCount = 8 ;
 
 	// Set if the pipe is set into a tile
 	private Tile tile = null;
@@ -20,6 +21,10 @@ public abstract class AbsPipe {
 
 	public abstract Entrance getExit(Entrance entered);
 
+	public AbsPipe() {
+		this.gooCount = startGooCount ;
+	}
+	
 	/**
 	 * for pipes that affect goo
 	 */
@@ -53,7 +58,7 @@ public abstract class AbsPipe {
 		// Pipe Behavior
 		// Like slowing down the goo, etc.
 
-		this.setState(PipeState.FILLING);
+		this.setState(PipeState.FILLING, listener);
 		this.setEntranceEntered(entrance);
 		this.gooChangeListener = listener;
 
@@ -77,7 +82,7 @@ public abstract class AbsPipe {
 		// @todo update pipe animation and fire gui event
 
 		if (gooCount == 0) {
-			this.setState(PipeState.FULL);
+			this.setState(PipeState.FULL, gooChangeListener);
 		}
 
 	}
@@ -91,15 +96,15 @@ public abstract class AbsPipe {
 
 		// Children can override this to trigger specific
 		// Pipe Behavior
-		this.setState(PipeState.FULL);
+		this.setState(PipeState.FULL, listener);
 	}
 
-	public PipeState getState() {
+	public PipeState getState(GooChangeListener listener) throws Exception {
 		return state;
 	}
 
-	public void setState(PipeState currentState) {
-		this.state = currentState;
+	protected void setState(PipeState state, GooChangeListener listener) throws Exception {
+		this.state = state;
 	}
 
 	public Entrance getEntranceEntered() {
@@ -116,6 +121,14 @@ public abstract class AbsPipe {
 
 	public void setTile(Tile tile) {
 		this.tile = tile;
+	}
+
+	public int getGooCount() {
+		return this.gooCount;
+	}
+
+	public int getStartGooCount() {
+		return this.startGooCount;
 	}
 
 }
